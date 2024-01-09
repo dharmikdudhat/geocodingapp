@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geocoding App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Geocoding App</h1>
+
+    <label for="locationInput">Enter Address or Place Name:</label>
+    <input type="text" id="locationInput" placeholder="E.g., 1600 Amphitheatre Parkway, Mountain View">
+
+    <button onclick="geocode()">Geocode</button>
+    <button onclick="reverseGeocode()">Reverse Geocode</button>
+
+    <div id="result"></div>
+
+    <script>
+        function geocode() {
+            const locationInput = document.getElementById('locationInput').value;
+            const geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({ 'address': locationInput }, function (results, status) {
+                if (status === 'OK') {
+                    const location = results[0].geometry.location;
+                    displayResult(location.lat(), location.lng());
+                } else {
+                    displayResult('Geocode was not successful. Reason: ' + status);
+                }
+            });
+        }
+
+        function reverseGeocode() {
+            const locationInput = document.getElementById('locationInput').value;
+            const geocoder = new google.maps.Geocoder();
+
+            const latlngStr = locationInput.split(',', 2);
+            const lat = parseFloat(latlngStr[0]);
+            const lng = parseFloat(latlngStr[1]);
+
+            const latLng = new google.maps.LatLng(lat, lng);
+
+            geocoder.geocode({ 'location': latLng }, function (results, status) {
+                if (status === 'OK') {
+                    const address = results[0].formatted_address;
+                    displayResult(address);
+                } else {
+                    displayResult('Reverse geocode was not successful. Reason: ' + status);
+                }
+            });
+        }
+
+        function displayResult(result) {
+            document.getElementById('result').innerHTML = '<strong>Result:</strong> ' + result;
+        }
+    </script>
+
+    <!-- Include the Google Maps JavaScript API with the Geocoding library -->
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4zjO9yD1_48p8OR2yV1Hz82eaemau7_I&libraries=places&callback=initMap">
+    </script>
+</body>
+</html>
