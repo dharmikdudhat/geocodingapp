@@ -25,7 +25,7 @@ async function geocodeAddress(address) {
   }
 }
 
-// Replace '1600 Amphitheatre Parkway, Mountain View, CA' with the address you want to geocode.
+
 geocodeAddress('ahmedabad india');
 
 async function getDistance(city1, city2) {
@@ -46,7 +46,6 @@ async function getDistance(city1, city2) {
     const lat2 = location2.latitude;
     const lon2 = location2.longitude;
   
-    // Haversine formula for calculating distance
     const R = 6371; // Earth's radius in km
     const dLat = deg2rad(lat2 - lat1);
     const dLon = deg2rad(lon2 - lon1);
@@ -64,5 +63,4 @@ async function getDistance(city1, city2) {
     return deg * (Math.PI / 180);
   }
   
-  // Replace 'City1' and 'City2' with the cities you want to find the distance between.
   getDistance('bangalore', 'surat');
