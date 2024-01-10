@@ -25,13 +25,18 @@ async function geocodeAddress(address) {
   }
 }
 
-async function getDistance(city1, city2) {
+async function getDistance(city1, city2, city3) {
   const location1 = await geocodeAddress(city1);
   const location2 = await geocodeAddress(city2);
+  const location3 = await geocodeAddress(city3);
 
-  if (location1 && location2) {
-    const distance = await calculateDistanceUsingAPI(location1, location2);
+  if (location1 && location2 && location3) {
+    const distance1 = await calculateDistanceUsingAPI(location1, location2);
+    const distance2 = await calculateDistanceUsingAPI(location2, location3);
    // console.log(`Distance between ${city1} and ${city2}: ${distance} km`);
+   const totalDistance = distance1 + distance2;
+   console.log(totalDistance);
+   return totalDistance;
   } else {
     console.log('Unable to calculate distance.');
   }
@@ -62,6 +67,7 @@ async function calculateDistanceUsingAPI(location1, location2) {
             response.data.resourceSets[0].resources.length > 0
         ) {
             const routes = response.data.resourceSets[0].resources;
+            let minDistance = Infinity;
             routes.forEach((route, index) => {
                 const totalDistance = route.travelDistance;
                 const totalDuration = route.travelDuration;
@@ -69,11 +75,14 @@ async function calculateDistanceUsingAPI(location1, location2) {
                 
                 console.log(`Route ${index + 1} Distance: ${totalDistance} km`);
                 console.log(`Route ${index + 1} Duration: ${totladurationinhours} hr`);
+
+                if(totalDistance < minDistance){
+                    minDistance = totalDistance;
+                }
             });
 
-            
-
-            return routes;
+           console.log(minDistance);
+            return minDistance;
         } else {
             console.log('Routes calculation failed.');
             return null;
@@ -85,13 +94,11 @@ async function calculateDistanceUsingAPI(location1, location2) {
 }
 
 
-  
-
-// Example usage
 
 
 
-// Replace 'City1' and 'City2' with the cities you want to find the distance between.
-getDistance('Bangalore', 'Surat');
+
+
+getDistance('Bangalore', 'Surat', 'ahmedabad');
 
 
