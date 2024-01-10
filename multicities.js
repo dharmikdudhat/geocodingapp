@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const BING_MAPS_API_KEY = 'AohqVCq4LU6rtnhY1dBFm9WrSy-eflaP63J-bDmhCbPEgb9kqF50WtfaNojmYVNa';
-
+const prompt = require('prompt-sync')({sigint: true});
 async function geocodeAddress(address) {
   try {
     const response = await axios.get(`https://dev.virtualearth.net/REST/v1/Locations?q=${encodeURIComponent(address)}&key=${BING_MAPS_API_KEY}`);
@@ -25,18 +25,20 @@ async function geocodeAddress(address) {
   }
 }
 
-async function getDistance(city1, city2, city3) {
+async function getDistance(city1, city2) {
   const location1 = await geocodeAddress(city1);
   const location2 = await geocodeAddress(city2);
-  const location3 = await geocodeAddress(city3);
+  //const location3 = await geocodeAddress(city3);
 
-  if (location1 && location2 && location3) {
+  if (location1 && location2) {
     const distance1 = await calculateDistanceUsingAPI(location1, location2);
-    const distance2 = await calculateDistanceUsingAPI(location2, location3);
+   // const distance2 = await calculateDistanceUsingAPI(location2, location3);
    // console.log(`Distance between ${city1} and ${city2}: ${distance} km`);
-   const totalDistance = distance1 + distance2;
-   console.log(totalDistance);
-   return totalDistance;
+   //const totalDistance = distance1 + distance2;
+   //console.log(totalDistance);
+   //return totalDistance;
+   return distance1;
+
   } else {
     console.log('Unable to calculate distance.');
   }
@@ -94,11 +96,39 @@ async function calculateDistanceUsingAPI(location1, location2) {
 }
 
 
+async function manuallyentered(){
+    let totaldistance = 0;
+    try{
+        let city1 = prompt ("Enter city 1 : ");
+        do{
+            let city2 = prompt("enter destination or no ");
+            if(city2 == "no"){
+                break;
+                
+            }else{
+                const first = await getDistance(city1,city2);
+                if(first !== null){
+                    totaldistance += first;
+                    console.log(city1);
+                    
+                }else{
+                    console.log('error in calculating distance');
+                }
+                city1 = city2; 
+            }
+        }while(true);
+    }catch(err){
+        console.log("error ocurred");
+    }
+    console.log(totaldistance);
+    return totaldistance;
+} 
+
+manuallyentered();
 
 
 
 
-
-getDistance('Bangalore', 'Surat', 'ahmedabad');
+//getDistance('Bangalore', 'Surat', 'ahmedabad');
 
 
