@@ -13,5 +13,8 @@
     "axios": "^1.6.5",
     "node-geocoder": "^4.2.0",
     "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
   }
 }
