@@ -100,7 +100,7 @@ async function manuallyentered() {
   try {
     let city1 = prompt("Enter city 1 : ");
     do {
-      let city2 = prompt("enter destination or no ");
+      let city2 = prompt("Enter Destination or if this is last place you want to check then enter no :  ");
       if (city2 == "no") {
         break;
       } else {
@@ -118,9 +118,13 @@ async function manuallyentered() {
     console.log("error ocurred");
   }
 
-
   let finalDistance = Math.round(totaldistance);
-  console.log(`Total distance you have traveled till now : ${finalDistance} kms`);
+  console.log(
+    `Total distance you have traveled till now : ${finalDistance} kms`
+  );
+
+  let feedback = prompt("enter your feedback about this :");
+  console.log(feedback);
   return finalDistance;
 }
 
